@@ -15,16 +15,19 @@ class ResourseManager {
   void init() async {
     var db = DatabaseManager.instance;
     var r = await db.getResources();
+    // print(r);
 
-    var resources = jsonDecode(r)['resources'] as Map<String, dynamic>;
+    var resourcesFromDb = jsonDecode(r)['resources'] as Map<String, dynamic>;
 
-    resources.forEach((key, value) {
-      resources[key] = Resource(value['name'], value['quantity']);
+    resourcesFromDb.forEach((key, value) {
+      resources[key] = Resource.fromJson(value);
     });
 
     // save game states in every 10 seconds for now
     Timer.periodic(const Duration(milliseconds: 10 * 1000), (timer) async {
-      await db.setResources(jsonEncode(this));
+      if (resources.isNotEmpty) {
+        await db.setResources(jsonEncode(this));
+      }
     });
   }
 
