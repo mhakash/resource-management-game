@@ -16,9 +16,9 @@ class ResourseManager {
     var db = DatabaseManager.instance;
     var r = await db.getResources();
 
-    var resouces = jsonDecode(r)['resources'] as Map<String, dynamic>;
+    var resources = jsonDecode(r)['resources'] as Map<String, dynamic>;
 
-    resouces.forEach((key, value) {
+    resources.forEach((key, value) {
       resources[key] = Resource(value['name'], value['quantity']);
     });
 
